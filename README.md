@@ -2,7 +2,6 @@ pogo
 ====
 Proof of concept Shell as a Service (ShaaS). Exposes execution of PowerShell commands and scripts via REST methods. Can easily be extended to any shell (planned in future releases).
 
-
 ###Request Contexts
 * __/command/__ - Executes named PowerShell command.
 * __/script/__ - Executes named script.
@@ -10,7 +9,6 @@ Proof of concept Shell as a Service (ShaaS). Exposes execution of PowerShell com
 
 ###Running Commands
 Commands are handled by the /command/ context. Most common commands are readily supported and will return any structured data in JSON format. Parameters are passed via url query parameters. Named values will be broken out into key/value pairs and added to the commandstring.
-
 
 Run __[Get-Date](https://technet.microsoft.com/en-us/library/hh849887.aspx)__ command.
     http://127.0.0.1:8080/command/Get-Date
@@ -22,13 +20,11 @@ Run __[Get-Date](https://technet.microsoft.com/en-us/library/hh849887.aspx)__ co
 }
 ```
 
-
 Run __[Write-Host](https://technet.microsoft.com/en-us/library/ee177031.aspx)__ command.
     http://127.0.0.1:8080/command/Write-Host?"Hello,%20World!"
 ```json
 Hello, World!
 ```
-
 
 Run __[Get-Item](https://technet.microsoft.com/en-us/library/hh849788.aspx)__ command.
     http://127.0.0.1:8080/command/Get-Item?-Path="pogo.exe"
@@ -59,6 +55,20 @@ Run __[Get-Item](https://technet.microsoft.com/en-us/library/hh849788.aspx)__ co
 }
 ```
 
+###Running Scripts
+Scripts are handled by the __/script/__ context. By default custom scripts are stored in the __./scripts/__ directory relative to the service binary, but the location can be customized in the __config.json__. Much like the commands - parameters are passed via url query params. There is a simple test script included with the code that will allow the input of __-Name__. Adding/removing custom scripts requires no restarts nor recompiles.
+
+Run script with no parameters (using defaults).
+    http://localhost:8080/script/Test-Script
+```json
+Hello, World!
+```
+
+Run script to greet 'Isaac'.
+    http://127.0.0.1:8080/script/Test-Script?-Name=Isaac
+```json
+Hello, Isaac!
+```
 
 ###TODO
 * Add ___Authentication___
