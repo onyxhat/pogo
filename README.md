@@ -66,3 +66,4 @@ Run __[Get-Item](https://technet.microsoft.com/en-us/library/hh849788.aspx)__ co
 * Command restrictions
 * Additional configuration values
 * Remote configuration
+* Configurable script directory
