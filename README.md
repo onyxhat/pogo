@@ -9,7 +9,7 @@ PowerShell as a Service
 * __/exit/__ - Terminates the service instance.
 
 ###Example
-    http://127.0.0.1:8080/command/Get-Date
+    http://127.0.0.1:8080/command/__Get-Date__
 Returns PowerShell Data in JSON  
 ```json
 {
