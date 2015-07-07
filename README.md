@@ -11,6 +11,7 @@ PowerShell as a Service
 ###Running Commands
 Commands are handled by the /command/ context. Most common commands are readily supported and will return any structured data in JSON format. Parameters are passed via url query parameters. Named values will be broken out into key/value pairs and added to the commandstring.
 
+
 Run __[Get-Date](https://technet.microsoft.com/en-us/library/hh849887.aspx)__ command.
     http://127.0.0.1:8080/command/Get-Date
 ```json
@@ -21,11 +22,13 @@ Run __[Get-Date](https://technet.microsoft.com/en-us/library/hh849887.aspx)__ co
 }
 ```
 
+
 Run __[Write-Host](https://technet.microsoft.com/en-us/library/ee177031.aspx)__ command.
     http://127.0.0.1:8080/command/Write-Host?"Hello,%20World!"
 ```json
 Hello, World!
 ```
+
 
 Run __[Get-Item](https://technet.microsoft.com/en-us/library/hh849788.aspx)__ command.
     http://127.0.0.1:8080/command/Get-Item?-Path="pogo.exe"
@@ -55,6 +58,7 @@ Run __[Get-Item](https://technet.microsoft.com/en-us/library/hh849788.aspx)__ co
 ...
 }
 ```
+
 
 ###TODO
 * Add ___Authentication___
