@@ -23,7 +23,7 @@ Returns PowerShell Data in JSON
 ```
 
 Run __[Write-Host](https://technet.microsoft.com/en-us/library/ee177031.aspx)__ command.
-    http://127.0.0.1:8080/command/Write-Host?"Hello, World!"
+    http://127.0.0.1:8080/command/Write-Host?"Hello,%20World!"
 ```json
 Hello, World!
 ```
