@@ -71,13 +71,8 @@ func RunShell(w http.ResponseWriter, r *http.Request) {
 func RunScript(w http.ResponseWriter, r *http.Request) {
 	var commbuffer bytes.Buffer
 
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	if err != nil {
-		log.Error(err)
-	}
-
 	commbuffer.WriteString("&\"")
-	commbuffer.WriteString(filepath.Join(dir, "\\scripts\\", mux.Vars(r)["name"]))
+	commbuffer.WriteString(filepath.Join(viper.GetString("ScriptFolder"), mux.Vars(r)["name"]))
 	commbuffer.WriteString(".ps1\"")
 	commbuffer.WriteString(ParseArgs(r))
 
@@ -91,6 +86,7 @@ func init() {
 	viper.ReadInConfig()
 
 	viper.SetDefault("Binding", ":8080")
+	viper.SetDefault("ScriptFolder", ".\\scripts\\")
 }
 
 func main() {

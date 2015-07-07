@@ -1,3 +1,4 @@
 {
-    "Binding": ":8080"
+    "Binding": ":8080",
+    "ScriptFolder": ".\\scripts\\"
 }
