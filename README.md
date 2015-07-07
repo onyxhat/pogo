@@ -1,6 +1,6 @@
 pogo
 ====
-PowerShell as a Service
+Proof of concept Shell as a Service (ShaaS). Exposes execution of PowerShell commands and scripts via REST methods. Can easily be extended to any shell (planned in future releases).
 
 
 ###Request Contexts
