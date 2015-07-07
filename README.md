@@ -76,4 +76,3 @@ Hello, Isaac!
 * Command restrictions
 * Additional configuration values
 * Remote configuration
-* Configurable script directory

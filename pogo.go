@@ -5,7 +5,7 @@ import (
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gorilla/mux"
-	"github.com/spf13/viper"
+	config "github.com/spf13/viper"
 	"net/http"
 	"net/url"
 	"os"
@@ -72,7 +72,7 @@ func RunScript(w http.ResponseWriter, r *http.Request) {
 	var commbuffer bytes.Buffer
 
 	commbuffer.WriteString("&\"")
-	commbuffer.WriteString(filepath.Join(viper.GetString("ScriptFolder"), mux.Vars(r)["name"]))
+	commbuffer.WriteString(filepath.Join(config.GetString("ScriptFolder"), mux.Vars(r)["name"]))
 	commbuffer.WriteString(".ps1\"")
 	commbuffer.WriteString(ParseArgs(r))
 
@@ -81,12 +81,12 @@ func RunScript(w http.ResponseWriter, r *http.Request) {
 
 //Runtime
 func init() {
-	viper.SetConfigName("config")
-	viper.AddConfigPath(".\\")
-	viper.ReadInConfig()
+	config.SetConfigName("config")
+	config.AddConfigPath(".\\")
+	config.ReadInConfig()
 
-	viper.SetDefault("Binding", ":8080")
-	viper.SetDefault("ScriptFolder", ".\\scripts\\")
+	config.SetDefault("Binding", ":8080")
+	config.SetDefault("ScriptFolder", ".\\scripts\\")
 }
 
 func main() {
@@ -97,6 +97,6 @@ func main() {
 	mx.HandleFunc("/command/{name:\\S+}", RunShell)
 	mx.HandleFunc("/script/{name:\\S+}", RunScript)
 
-	log.Info("Listening at " + viper.GetString("Binding"))
-	http.ListenAndServe(viper.GetString("Binding"), mx)
+	log.Info("Listening at " + config.GetString("Binding"))
+	http.ListenAndServe(config.GetString("Binding"), mx)
 }
