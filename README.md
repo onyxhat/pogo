@@ -13,7 +13,6 @@ Commands are handled by the /command/ context. Most common commands are readily 
 
 Run __[Get-Date](https://technet.microsoft.com/en-us/library/hh849887.aspx)__ command.
     http://127.0.0.1:8080/command/Get-Date
-Returns PowerShell Data in JSON  
 ```json
 {
     "value":  "\/Date(1436237104231)\/",
