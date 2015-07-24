@@ -15,6 +15,28 @@ import (
 	"time"
 )
 
+//Runtime
+func init() {
+	config.SetConfigName("config")
+	config.AddConfigPath(".\\")
+	config.ReadInConfig()
+
+	config.SetDefault("Binding", ":8080")
+	config.SetDefault("ScriptFolder", ".\\scripts\\")
+}
+
+func main() {
+	mx := mux.NewRouter()
+
+	mx.HandleFunc("/", IndexHandler)
+	mx.HandleFunc("/exit", ExitHandler)
+	mx.HandleFunc("/command/{name:\\S+}", RunShell)
+	mx.HandleFunc("/script/{name:\\S+}", RunScript)
+
+	log.Info("Listening at " + config.GetString("Binding"))
+	http.ListenAndServe(config.GetString("Binding"), mx)
+}
+
 //Functions
 func ParseArgs(r *http.Request) string {
 	var argsBuffer bytes.Buffer
@@ -77,26 +99,4 @@ func RunScript(w http.ResponseWriter, r *http.Request) {
 	commbuffer.WriteString(ParseArgs(r))
 
 	w.Write([]byte(fmt.Sprintf(exec_script(commbuffer.String()))))
-}
-
-//Runtime
-func init() {
-	config.SetConfigName("config")
-	config.AddConfigPath(".\\")
-	config.ReadInConfig()
-
-	config.SetDefault("Binding", ":8080")
-	config.SetDefault("ScriptFolder", ".\\scripts\\")
-}
-
-func main() {
-	mx := mux.NewRouter()
-
-	mx.HandleFunc("/", IndexHandler)
-	mx.HandleFunc("/exit", ExitHandler)
-	mx.HandleFunc("/command/{name:\\S+}", RunShell)
-	mx.HandleFunc("/script/{name:\\S+}", RunScript)
-
-	log.Info("Listening at " + config.GetString("Binding"))
-	http.ListenAndServe(config.GetString("Binding"), mx)
 }
