@@ -57,7 +57,7 @@ func ParseArgs(r *http.Request) string {
 func exec_script(sc string) string {
 	sc = string(strings.TrimSpace(sc))
 
-	cmd := exec.Command("powershell.exe", "-NoLogo", "-NonInteractive", "-Command", "&{", sc, "}", "| ConvertTo-Json")
+	cmd := exec.Command("powershell.exe", "-NoLogo", "-NonInteractive", "-Command", "&{", sc, "}")
 	out, err := cmd.Output()
 
 	if err != nil {
@@ -86,6 +86,7 @@ func RunShell(w http.ResponseWriter, r *http.Request) {
 	var commbuffer bytes.Buffer
 	commbuffer.WriteString(mux.Vars(r)["name"])
 	commbuffer.WriteString(ParseArgs(r))
+	commbuffer.WriteString(" | ConvertTo-Json")
 
 	w.Write([]byte(fmt.Sprintf(exec_script(commbuffer.String()))))
 }
