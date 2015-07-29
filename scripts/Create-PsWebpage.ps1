@@ -4,7 +4,7 @@ Param (
 )
 
 ###Templates
-$Form = @"
+$Inline = @"
 <html>
     <h1>$(Split-Path $MyInvocation.MyCommand.Definition -Leaf)</h1>
 
@@ -25,5 +25,5 @@ $Result = @"
 if ($($PSBoundParameters.Keys)) {
     Write-Output $Result
 } else {
-    Write-Output $Form
+    Write-Output $Inline
 }
