@@ -65,7 +65,7 @@ Hello, World!
 ```
 
 Run script to greet 'Isaac'.
-    http://127.0.0.1:8080/script/Test-Script?-Name=Isaac
+    http://127.0.0.1:8080/script/Hello-World?-Name=Isaac
 ```json
 Hello, Isaac!
 ```
