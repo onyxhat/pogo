@@ -59,7 +59,7 @@ Run __[Get-Item](https://technet.microsoft.com/en-us/library/hh849788.aspx)__ co
 Scripts are handled by the __/script/__ context. By default custom scripts are stored in the __./scripts/__ directory relative to the service binary, but the location can be customized in the __config.json__. Much like the commands - parameters are passed via url query params. There is a simple test script included with the code that will allow the input of __-Name__. Adding/removing custom scripts requires no restarts nor recompiles.
 
 Run script with no parameters (using defaults).
-    http://127.0.0.1:8080/script/Test-Script
+    http://127.0.0.1:8080/script/Hello-World
 ```json
 Hello, World!
 ```
