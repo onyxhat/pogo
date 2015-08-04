@@ -30,7 +30,7 @@ func main() {
 
 	mx.HandleFunc("/", IndexHandler)
 	mx.HandleFunc("/exit", ExitHandler)
-	mx.HandleFunc("/command/{name:\\S+}", RunShell)
+	//mx.HandleFunc("/command/{name:\\S+}", RunShell)
 	mx.HandleFunc("/script/{name:\\S+}", RunScript)
 
 	log.Info("Listening at " + config.GetString("Binding"))
@@ -96,7 +96,7 @@ func RunScript(w http.ResponseWriter, r *http.Request) {
 
 	commbuffer.WriteString("&\"")
 	commbuffer.WriteString(filepath.Join(config.GetString("ScriptFolder"), mux.Vars(r)["name"]))
-	commbuffer.WriteString(".ps1\"")
+	commbuffer.WriteString("\"")
 	commbuffer.WriteString(ParseArgs(r))
 
 	w.Write([]byte(fmt.Sprintf(exec_script(commbuffer.String()))))

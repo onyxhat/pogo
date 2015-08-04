@@ -9,7 +9,10 @@ $Inline = @"
     <h1>$(Split-Path $MyInvocation.MyCommand.Definition -Leaf)</h1>
 
     <form method="GET">
-        $($MyInvocation.MyCommand.Parameters.Keys | % { "$_ <input type='text' name='-$_'><br>`r`n" })
+        <fieldset>
+            <legend>Parameters</legend>
+            $($MyInvocation.MyCommand.Parameters.Keys | % { "<label>$_ <input type='text' name='-$_'></label><br>`r`n" })
+        </fieldset>
         <input type="submit" value="Submit">
     </form>
 </html>
