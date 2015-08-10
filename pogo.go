@@ -30,7 +30,7 @@ func main() {
 
 	mx.HandleFunc("/", IndexHandler)
 	mx.HandleFunc("/exit", ExitHandler)
-	//mx.HandleFunc("/command/{name:\\S+}", RunShell)
+	mx.HandleFunc("/command/{name:\\S+}", RunShell)
 	mx.HandleFunc("/script/{name:\\S+}", RunScript)
 
 	log.Info("Listening at " + config.GetString("Binding"))
