@@ -30,7 +30,7 @@ func main() {
 
 	mx.HandleFunc("/", IndexHandler)
 	mx.HandleFunc("/exit", ExitHandler)
-	mx.HandleFunc("/command/{name:\\S+}", RunShell)
+	mx.HandleFunc("/command/{name:\\S+}", RunCommand)
 	mx.HandleFunc("/script/{name:\\S+}", RunScript)
 
 	log.Info("Listening at " + config.GetString("Binding"))
@@ -82,7 +82,7 @@ func ExitHandler(w http.ResponseWriter, r *http.Request) {
 	time.Sleep(3000 * time.Millisecond)
 }
 
-func RunShell(w http.ResponseWriter, r *http.Request) {
+func RunCommand(w http.ResponseWriter, r *http.Request) {
 	var commbuffer bytes.Buffer
 	commbuffer.WriteString(mux.Vars(r)["name"])
 	commbuffer.WriteString(ParseArgs(r))
