@@ -5,6 +5,7 @@ import (
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gorilla/mux"
+	"github.com/kardianos/osext"
 	config "github.com/spf13/viper"
 	"net/http"
 	"net/url"
@@ -17,11 +18,16 @@ import (
 
 //Runtime
 func init() {
+	exePath, err := osext.ExecutableFolder()
+	if err != nil {
+		exePath = ".\\"
+	}
+
+	config.AddConfigPath(exePath)
 	config.SetConfigName("config")
-	config.AddConfigPath(".\\")
 	config.ReadInConfig()
 
-	config.SetDefault("Binding", ":8080")
+	config.SetDefault("Binding", "0.0.0.0:8080")
 	config.SetDefault("ScriptFolder", ".\\scripts\\")
 }
 
@@ -31,7 +37,7 @@ func main() {
 	mx.HandleFunc("/", IndexHandler)
 	mx.HandleFunc("/exit", ExitHandler)
 	mx.HandleFunc("/command/{name:\\S+}", RunCommand)
-	mx.HandleFunc("/script/{name:\\S+}", RunScript)
+	mx.HandleFunc("/scripts/{name:\\S+}", RunScript)
 
 	log.Info("Listening at " + config.GetString("Binding"))
 	http.ListenAndServe(config.GetString("Binding"), mx)
