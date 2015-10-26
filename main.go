@@ -29,6 +29,7 @@ func init() {
 
 	config.SetDefault("Binding", "0.0.0.0:8080")
 	config.SetDefault("ScriptFolder", ".\\scripts\\")
+	config.SetDefault("CommandsEnabled", true)
 }
 
 func main() {
@@ -36,8 +37,13 @@ func main() {
 
 	mx.HandleFunc("/", IndexHandler)
 	mx.HandleFunc("/exit", ExitHandler)
-	mx.HandleFunc("/command/{name:\\S+}", RunCommand)
 	mx.HandleFunc("/scripts/{name:\\S+}", RunScript)
+
+	if config.GetBool("CommandsEnabled") {
+		mx.HandleFunc("/command/{name:\\S+}", RunCommand)
+	} else {
+		log.Info("/command/ context is disabled")
+	}
 
 	log.Info("Listening at " + config.GetString("Binding"))
 	http.ListenAndServe(config.GetString("Binding"), mx)
