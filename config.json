@@ -1,5 +1,6 @@
 {
     "Binding": "0.0.0.0:8080",
     "ScriptFolder": ".\\scripts\\",
-    "CommandsEnabled": true
+    "CommandsEnabled": true,
+    "ScriptsEnabled": true
 }

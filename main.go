@@ -33,19 +33,22 @@ func init() {
 }
 
 func main() {
-	mx := mux.NewRouter()
+	log.Info("Listening at http://" + config.GetString("Binding"))
 
+	mx := mux.NewRouter()
 	mx.HandleFunc("/", IndexHandler)
 	mx.HandleFunc("/exit", ExitHandler)
-	mx.HandleFunc("/scripts/{name:\\S+}", RunScript)
+
+	if config.GetBool("ScriptsEnabled") {
+		mx.HandleFunc("/scripts/{name:\\S+}", RunScript)
+		log.Info("Script router listening at http://" + config.GetString("Binding") + "/scripts/")
+	}
 
 	if config.GetBool("CommandsEnabled") {
 		mx.HandleFunc("/command/{name:\\S+}", RunCommand)
-	} else {
-		log.Info("/command/ context is disabled")
+		log.Info("Command router listening at http://" + config.GetString("Binding") + "/command/")
 	}
 
-	log.Info("Listening at " + config.GetString("Binding"))
 	http.ListenAndServe(config.GetString("Binding"), mx)
 }
 
@@ -89,13 +92,14 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func ExitHandler(w http.ResponseWriter, r *http.Request) {
 	defer os.Exit(0)
 
-	log.Info("Shutting Down")
-	w.Write([]byte(fmt.Sprintf("Shutting Down")))
+	log.Info("Shutting Down...")
+	w.Write([]byte(fmt.Sprintf("Shutting Down...")))
 	time.Sleep(3000 * time.Millisecond)
 }
 
 func RunCommand(w http.ResponseWriter, r *http.Request) {
 	var commbuffer bytes.Buffer
+
 	commbuffer.WriteString(mux.Vars(r)["name"])
 	commbuffer.WriteString(ParseArgs(r))
 	commbuffer.WriteString(" | ConvertTo-Json")
