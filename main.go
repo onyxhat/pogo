@@ -30,6 +30,7 @@ func init() {
 	config.SetDefault("Binding", "0.0.0.0:8080")
 	config.SetDefault("ScriptFolder", ".\\scripts\\")
 	config.SetDefault("CommandsEnabled", true)
+	config.SetDefault("ExitEnabled", true)
 }
 
 func main() {
@@ -37,7 +38,10 @@ func main() {
 
 	mx := mux.NewRouter()
 	mx.HandleFunc("/", IndexHandler)
-	mx.HandleFunc("/exit", ExitHandler)
+
+	if config.GetBool("ExitEnabled") {
+		mx.HandleFunc("/exit", ExitHandler)
+	}
 
 	if config.GetBool("ScriptsEnabled") {
 		mx.HandleFunc("/scripts/{name:\\S+}", RunScript)
