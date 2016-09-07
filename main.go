@@ -9,15 +9,16 @@ import (
 	config "github.com/spf13/viper"
 	"net/http"
 	"net/url"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"time"
+    "github.com/kardianos/service"
 )
 
+type program struct{}
+
 //Runtime
-func init() {
+func (p *program) Start(s service.Service) error {
 	exePath, err := osext.ExecutableFolder()
 	if err != nil {
 		exePath = ".\\"
@@ -30,14 +31,16 @@ func init() {
 	config.SetDefault("Binding", "0.0.0.0:8080")
 	config.SetDefault("ScriptFolder", ".\\scripts\\")
 	config.SetDefault("CommandsEnabled", true)
+
+    go p.run()
+    return nil
 }
 
-func main() {
+func (p *program) run() {
 	log.Info("Listening at http://" + config.GetString("Binding"))
 
 	mx := mux.NewRouter()
 	mx.HandleFunc("/", IndexHandler)
-	mx.HandleFunc("/exit", ExitHandler)
 
 	if config.GetBool("ScriptsEnabled") {
 		mx.HandleFunc("/scripts/{name:\\S+}", RunScript)
@@ -50,6 +53,32 @@ func main() {
 	}
 
 	http.ListenAndServe(config.GetString("Binding"), mx)
+}
+
+func (p *program) Stop(s service.Service) error {
+    return nil
+}
+
+func main() {
+    svcConfig := &service.Config{
+        Name:        "pogo",
+        DisplayName: "PoGo Service",
+        Description: "PoGo API Service.",
+    }
+
+    prg := &program{}
+    s, err := service.New(prg, svcConfig)
+    if err != nil {
+            log.Fatal(err)
+    }
+    logger, err := s.Logger(nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+    err = s.Run()
+    if err != nil {
+        logger.Error(err)
+    }
 }
 
 //Functions
@@ -87,14 +116,6 @@ func exec_script(sc string) string {
 //Handlers
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Service Running"))
-}
-
-func ExitHandler(w http.ResponseWriter, r *http.Request) {
-	defer os.Exit(0)
-
-	log.Info("Shutting Down...")
-	w.Write([]byte(fmt.Sprintf("Shutting Down...")))
-	time.Sleep(3000 * time.Millisecond)
 }
 
 func RunCommand(w http.ResponseWriter, r *http.Request) {

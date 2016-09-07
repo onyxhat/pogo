@@ -5,7 +5,6 @@ Proof of concept Shell as a Service (ShaaS). Exposes execution of PowerShell com
 ###Request Contexts
 * __/command/__ - Executes named PowerShell command.
 * __/scripts/__ - Executes named script.
-* __/exit/__ - Terminates the service instance.
 
 ###Running Commands
 Commands are handled by the /command/ context. Most common commands are readily supported and will return any structured data in JSON format. Parameters are passed via url query parameters. Named values will be broken out into key/value pairs and added to the commandstring.
