@@ -1,13 +1,16 @@
-$MyScript = $MyInvocation.MyCommand.Definition
-$MyPath = Split-Path $MyScript
+$MyPath = Split-Path $MyInvocation.MyCommand.Definition
 $MyProject = $(Get-Item $MyPath).BaseName
+
+if (!(Test-Path $MyPath\bin)) { New-Item -Path $MyPath\bin -ItemType Directory | Out-Null }
+if (!$env:GOPATH) { $env:GOPATH = New-New-Item -Path C:\Go-work\ -ItemType Directory -Force | Select-Object -ExpandProperty FullName }
 
 $BuildOpts = @{
     "windows" = @("386", "amd64")
 }
 
 Push-Location $MyPath
-if (!(Test-Path $MyPath\bin)) { New-Item -Path $MyPath\bin -ItemType Directory | Out-Null }
+
+& go get .
 
 ForEach ($OS in $BuildOpts.GetEnumerator()) {
     ForEach ($Arch in $OS.Value) {
