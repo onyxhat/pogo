@@ -3,16 +3,19 @@ PoGo API
 Proof of concept Shell as a Service (ShaaS). Exposes execution of PowerShell commands and scripts via REST methods. Can easily be extended to any shell (planned in future releases).
 
 ###Request Contexts
+
 * __/command/__ - Executes named PowerShell command.
 * __/scripts/__ - Executes named script.
 
 ###Installing/Running as Windows Service
+
 ```batchfile
     sc create PoGo binPath= C:\path\to\bin\pogo.exe
     net start pogo
 ```
 
 ###Running Commands
+
 Commands are handled by the /command/ context. Most common commands are readily supported and will return any structured data in JSON format. Parameters are passed via url query parameters. Named values will be broken out into key/value pairs and added to the commandstring.
 
 Run __[Get-Date](https://technet.microsoft.com/en-us/library/hh849887.aspx)__ command.
@@ -61,6 +64,7 @@ Run __[Get-Item](https://technet.microsoft.com/en-us/library/hh849788.aspx)__ co
 ```
 
 ###Running Scripts
+
 Scripts are handled by the __/scripts/__ context. By default custom scripts are stored in the __./scripts/__ directory relative to the service binary, but the location can be customized in the __config.json__. Much like the commands - parameters are passed via url query params. There is a simple test script included with the code that will allow the input of __-Name__. Adding/removing custom scripts requires no restarts nor recompiles.
 
 Run script with no parameters (using defaults).
@@ -76,6 +80,7 @@ Hello, Isaac!
 ```
 
 ###TODO
+
 * Add ___Authentication___
 * Implement POST method of form values as parameters (takes precedence over query params)
 * Command restrictions
